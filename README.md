@@ -1,4 +1,4 @@
-# Umeda の個人サイト
+# 甘今美味の個人サイト
 
 このリポジトリは GitHub Pages で公開できるシンプルな個人サイトです。
 
@@ -26,7 +26,7 @@ python3 -m http.server 8000
 2. ローカルリポジトリを初期化し、リモートを追加
 ```bash
 git init
-git remote add origin git@github.com:<your-username>/amaimauma.github.io.git
+git remote add origin https://github.com/amaimauma/amaimauma.github.io.git
 ```
 3. ファイルをコミットしてプッシュ
 ```bash
@@ -36,7 +36,7 @@ git branch -M main
 git push -u origin main
 ```
 4. GitHub のリポジトリ設定で **Pages** を有効化し、`main` ブランチの `/ (root)` をソースに選択
-5. 数分後に `https://<your-username>.github.io/` で公開されます。
+5. 数分後に `https://amaimauma.github.io/` で公開されます。
 
 ## リンクの追加方法
 `index.html` の `<script>` 部分にある `links` 配列にオブジェクトを追加します。
