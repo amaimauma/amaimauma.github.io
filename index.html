@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>甘今美味の個人サイト</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 背景画像 -->
+  <div class="background"></div>
+
+  <div class="container">
+    <header>
+      <div class="profile-img">
+        <span>U</span>
+      </div>
+      <h1>甘今美味</h1>
+      <p class="subtitle">Welcome to my creative space</p>
+    </header>
+
+    <main>
+      <ul class="links" id="links"></ul>
+    </main>
+
+    <footer>
+      <p>© 2026 amaimauma</p>
+    </footer>
+  </div>
+
+  <script>
+    const links = [
+      { name: "Note", url: "https://note.com/umeda1230", desc: "日常の記録や記事", icon: "📝" },
+      { name: "YouTube", url: "https://www.youtube.com/@uma1230-xxxe/videos", desc: "動画コンテンツ", icon: "🎥" }
+    ];
+
+    const container = document.getElementById('links');
+    links.forEach((link, index) => {
+      const li = document.createElement('li');
+      li.className = 'link-item';
+      li.style.animationDelay = `${index * 0.15}s`;
+
+      const a = document.createElement('a');
+      a.href = link.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'link-icon';
+      iconSpan.textContent = link.icon || '🔗';
+
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'link-content';
+
+      const title = document.createElement('h2');
+      title.textContent = link.name;
+
+      const desc = document.createElement('p');
+      desc.textContent = link.desc || '';
+
+      contentDiv.appendChild(title);
+      contentDiv.appendChild(desc);
+
+      a.appendChild(iconSpan);
+      a.appendChild(contentDiv);
+      li.appendChild(a);
+      container.appendChild(li);
+    });
+  </script>
+</body>
+
+</html>
