@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おすすめドリンク - 甘今美味</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--link-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            margin-top: 1rem;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            background: var(--link-hover-bg);
+            border-color: var(--accent);
+        }
+
+        .product-image {
+            width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #fff;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .product-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .product-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .product-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 背景画像 -->
+    <div class="background"></div>
+
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <h2 class="sidebar-title">Menu</h2>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html"><span class="nav-icon">🏠</span> トップページ</a></li>
+                    <li class="nav-group">
+                        <div class="nav-group-title"><span class="nav-icon">📦</span> STLダウンロード</div>
+                        <ul class="sub-nav-links">
+                            <li><a href="stl.html">S字フック</a></li>
+                            <li><a href="dummy.html">仮のオブジェクト</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-group">
+                        <a href="articles.html" class="nav-group-title"><span class="nav-icon">📖</span> おすすめ記事</a>
+                    </li>
+                    <li class="nav-group">
+                        <a href="drinks.html" class="nav-group-title active" style="color:var(--accent);"><span
+                                class="nav-icon">🍷</span> おすすめドリンク</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="container" style="max-width: 600px;">
+                <header>
+                    <div class="profile-img">
+                        <span>🍷</span>
+                    </div>
+                    <h1>おすすめドリンク</h1>
+                    <p class="subtitle">日常を彩るお気に入りの一杯をご紹介</p>
+                </header>
+
+                <div class="articles-grid">
+                    <a href="https://amzn.to/4te5Pv6" target="_blank" rel="noopener noreferrer" class="product-card">
+                        <img src="https://m.media-amazon.com/images/I/71R2H4n5zBL._AC_SL1500_.jpg" alt="サントリー NOPE(ノープ)"
+                            class="product-image">
+                        <h3 class="product-title">サントリー NOPE(ノープ) ギルティ炭酸</h3>
+                        <p class="product-desc">
+                            スパイスとフルーツが絶妙にブレンドされた「ギルティ炭酸」です。<br><br>
+                            一口飲むとやみつきになる「甘濃い」味わいと、スッキリとした炭酸の刺激が特徴。疲れた時やリフレッシュしたい時に、最高の至福タイムを提供してくれます！日々の作業や映画鑑賞のお供に最適です。
+                        </p>
+                        <span class="product-btn">Amazonで詳細を見る</span>
+                    </a>
+                </div>
+
+                <div class="articles-grid">
+                    <a href="https://amzn.to/4te5Pv6" target="_blank" rel="noopener noreferrer" class="product-card">
+                        <img src="https://m.media-amazon.com/images/I/71R2H4n5zBL._AC_SL1500_.jpg" alt="サントリー NOPE(ノープ)"
+                            class="product-image">
+                        <h3 class="product-title">サントリー NOPE(ノープ) ギルティ炭酸</h3>
+                        <p class="product-desc">
+                            スパイスとフルーツが絶妙にブレンドされた「ギルティ炭酸」です。<br><br>
+                            一口飲むとやみつきになる「甘濃い」味わいと、スッキリとした炭酸の刺激が特徴。疲れた時やリフレッシュしたい時に、最高の至福タイムを提供してくれます！日々の作業や映画鑑賞のお供に最適です。
+                        </p>
+                        <span class="product-btn">Amazonで詳細を見る</span>
+                    </a>
+                </div>
+
+                <footer>
+                    <p>© 2026 amaimauma</p>
+                </footer>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
