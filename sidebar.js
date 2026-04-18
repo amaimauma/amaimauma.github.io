@@ -7,7 +7,6 @@ const sidebarHTML = `
                         <div class="nav-group-title"><span class="nav-icon">📦</span> STLダウンロード</div>
                         <ul class="sub-nav-links">
                             <li><a href="stl.html" class="nav-item">S字フック</a></li>
-                            <li><a href="dummy.html" class="nav-item">仮のオブジェクト</a></li>
                         </ul>
                     </li>
                     <li class="nav-group">
