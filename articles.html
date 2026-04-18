@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STLダウンロード - 甘今美味</title>
+    <title>おすすめ記事 - 甘今美味</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -23,32 +23,31 @@
                     <li class="nav-group">
                         <div class="nav-group-title"><span class="nav-icon">📦</span> STLダウンロード</div>
                         <ul class="sub-nav-links">
-                            <li><a href="stl.html" class="active">S字フック</a></li>
+                            <li><a href="stl.html">S字フック</a></li>
                             <li><a href="dummy.html">仮のオブジェクト</a></li>
                         </ul>
                     </li>
                     <li class="nav-group">
-                        <a href="articles.html" class="nav-group-title"><span class="nav-icon">📖</span> おすすめ記事</a>
+                        <a href="articles.html" class="nav-group-title" style="color:var(--accent);"><span
+                                class="nav-icon">📖</span> おすすめ記事</a>
                     </li>
                 </ul>
             </nav>
         </aside>
 
         <main class="main-content">
-            <div class="container">
+            <div class="container" style="max-width: 600px;">
                 <header>
                     <div class="profile-img">
-                        <span>📦</span>
+                        <span>📖</span>
                     </div>
-                    <h1>3Dモデル</h1>
-                    <p class="subtitle">ダウンロードコーナー</p>
+                    <h1>おすすめ記事</h1>
+                    <p class="subtitle">noteの全記事一覧</p>
                 </header>
 
-                <section class="download-section">
-                    <h2>S字フック</h2>
-                    <p>これはテスト用のSTLファイルです。下のボタンからダミーデータをダウンロードできます。ご自身の環境で3Dプリントなどにお使いください。</p>
-                    <a href="assets/s_hook_3dobj.stl" download class="download-btn">STLをダウンロード</a>
-                </section>
+                <div class="articles-grid" id="full-articles-container">
+                    <p style="text-align: center; opacity: 0.5;">記事を読み込んでいます...</p>
+                </div>
 
                 <footer>
                     <p>© 2026 amaimauma</p>
