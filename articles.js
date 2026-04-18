@@ -43,14 +43,12 @@ async function initNoteArticles() {
             articleDiv.className = 'article-card';
 
             // Thumbnail Image
-            const imgSrc = item.thumbnail || (item.enclosure ? item.enclosure.link : null);
-            if (imgSrc) {
-                const img = document.createElement('img');
-                img.src = imgSrc;
-                img.className = 'article-thumbnail';
-                img.alt = '';
-                articleDiv.appendChild(img);
-            }
+            const imgSrc = item.thumbnail || item.enclosure?.link || 'assets/sky.jpg';
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = 'article-thumbnail';
+            img.alt = '';
+            articleDiv.appendChild(img);
 
             // Info Wrapper
             const infoDiv = document.createElement('div');
