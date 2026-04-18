@@ -21,13 +21,27 @@ const sidebarHTML = `
 `;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Inject Hamburger button
+    const hamburgerBtn = document.createElement('button');
+    hamburgerBtn.className = 'hamburger-btn';
+    hamburgerBtn.innerHTML = '☰';
+    document.body.appendChild(hamburgerBtn);
+
     const wrapper = document.querySelector('.app-wrapper');
+    let aside = null;
     if (wrapper) {
-        const aside = document.createElement('aside');
+        aside = document.createElement('aside');
         aside.className = 'sidebar';
         aside.innerHTML = sidebarHTML;
         wrapper.prepend(aside);
     }
+
+    // Toggle logic
+    hamburgerBtn.addEventListener('click', () => {
+        if (aside) {
+            aside.classList.toggle('closed');
+        }
+    });
 
     // Set active link visually based on current URL path
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';

@@ -310,22 +310,32 @@ footer {
 .app-wrapper {
   display: flex;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 .sidebar {
   width: 250px;
+  height: 100vh;
+  overflow-y: auto;
   background: var(--glass-bg);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border-right: 1px solid var(--glass-border);
-  padding: 2.5rem 1.5rem;
+  padding: 4rem 1.5rem 2.5rem;
+  /* Increased top padding for hamburger */
   box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 10;
+  transition: margin-left 0.3s ease, transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.sidebar.closed {
+  margin-left: -250px;
 }
 
 .sidebar-title {
@@ -410,9 +420,12 @@ a.nav-group-title:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 4rem 2rem 2rem;
+  /* Increased top padding for hamburger */
   position: relative;
   z-index: 1;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 /* Download Section */
@@ -463,31 +476,66 @@ a.nav-group-title:hover {
   box-shadow: 0 6px 20px rgba(44, 177, 188, 0.4);
 }
 
+/* Hamburger Menu */
+.hamburger-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hamburger-btn:hover {
+  background: var(--link-hover-bg);
+}
+
 /* Responsive tweaks */
 @media (max-width: 768px) {
   .app-wrapper {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--glass-border);
-    padding: 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    z-index: 50;
+  }
+
+  .sidebar.closed {
+    margin-left: 0;
+    transform: translateX(-100%);
   }
 
   .nav-links {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
   }
 
   .nav-links li a {
-    padding: 0.8rem 1.2rem;
+    padding: 1rem;
   }
 
   .main-content {
-    padding: 1rem;
+    padding: 4rem 1rem 1rem;
+    width: 100%;
   }
 }
 
