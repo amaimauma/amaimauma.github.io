@@ -14,28 +14,6 @@
   <!-- 背景画像 -->
   <div class="background"></div>
   <div class="app-wrapper">
-    <aside class="sidebar">
-      <h2 class="sidebar-title">Menu</h2>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="index.html" class="active"><span class="nav-icon">🏠</span> トップページ</a></li>
-          <li class="nav-group">
-            <div class="nav-group-title"><span class="nav-icon">📦</span> STLダウンロード</div>
-            <ul class="sub-nav-links">
-              <li><a href="stl.html">S字フック</a></li>
-              <li><a href="dummy.html">仮のオブジェクト</a></li>
-            </ul>
-          </li>
-          <li class="nav-group">
-            <a href="articles.html" class="nav-group-title"><span class="nav-icon">📖</span> おすすめ記事</a>
-          </li>
-          <li class="nav-group">
-            <a href="drinks.html" class="nav-group-title"><span class="nav-icon">🍷</span> おすすめドリンク</a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-
     <main class="main-content">
       <div class="container">
         <header>
@@ -56,7 +34,6 @@
     </main>
   </div>
 
-  <script src="articles.js"></script>
   <script>
     const links = [
       { name: "Note", url: "https://note.com/umeda1230", desc: "日常の記録や記事", icon: "📝" },
@@ -96,6 +73,7 @@
       container.appendChild(li);
     });
   </script>
+    <script src="sidebar.js"></script>
 </body>
 
 </html>
