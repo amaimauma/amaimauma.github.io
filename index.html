@@ -4,59 +4,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>甘今美味の個人サイト</title>
+  <title>甘今美味 — クリエイティブスペース</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <!-- 背景画像 -->
-  <div class="background"></div>
   <div class="app-wrapper">
     <main class="main-content">
-      <div class="container">
-        <header>
-          <div class="profile-img">
-            <img src="assets/icon.webp" alt="U">
-          </div>
-          <h1>甘今美味</h1>
-          <p class="subtitle">クリエィティブスペースにようこそ</p>
-        </header>
+      <!-- ページ導入部 (和モダンデザイン) -->
+      <div class="page-intro">
+        <div class="profile-img-wrap" style="width: 90px; height: 90px; margin: 0 auto 1.8rem; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-color); padding: 4px; background: var(--bg-card); transition: transform 0.6s ease;">
+          <img src="assets/icon.webp" alt="甘今美味" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+        </div>
+        <span class="page-intro-icon">🪞</span>
+        <h1>甘今美味</h1>
+        <p class="subtitle">日常とクリエイティビティが交差する、静寂な創作空間</p>
+      </div>
 
-        <main>
-          <ul class="links" id="links"></ul>
-        </main>
-
-        <footer>
-          <p>© 2026 amaimauma</p>
-        </footer>
+      <!-- リンクグリッド -->
+      <div class="links-grid" id="links-container"></div>
     </main>
+
+    <footer>
+      <p>© 2026 amaimauma</p>
+    </footer>
   </div>
 
   <script>
     const links = [
-      { name: "Note", url: "https://note.com/umeda1230", desc: "日常の記録や記事", icon: "📝" },
-      { name: "YouTube", url: "https://www.youtube.com/@uma1230-xxxe/videos", desc: "動画コンテンツ", icon: "🎥" }
+      { 
+        name: "Note", 
+        url: "https://note.com/umeda1230", 
+        desc: "日々の気付き、技術的な覚書、日常のささやかな記録を綴っています。言葉を通じて日常を再解釈する場所です。", 
+        icon: "📝" 
+      },
+      { 
+        name: "YouTube", 
+        url: "https://www.youtube.com/@uma1230-xxxe/videos", 
+        desc: "映像と音による表現の試み。言葉では伝えきれない空気感やモーション、ビジュアルストーリーをお届けします。", 
+        icon: "🎥" 
+      }
     ];
 
-    const container = document.getElementById('links');
+    const container = document.getElementById('links-container');
     links.forEach((link, index) => {
-      const li = document.createElement('li');
-      li.className = 'link-item';
-      li.style.animationDelay = `${index * 0.15}s`;
+      const cardWrap = document.createElement('div');
+      cardWrap.className = 'link-card-wrap';
+      cardWrap.style.animationDelay = `${index * 0.15}s`;
 
       const a = document.createElement('a');
       a.href = link.url;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
+      a.className = 'link-card';
 
       const iconSpan = document.createElement('span');
-      iconSpan.className = 'link-icon';
+      iconSpan.className = 'link-card-icon';
       iconSpan.textContent = link.icon || '🔗';
-
-      const contentDiv = document.createElement('div');
-      contentDiv.className = 'link-content';
 
       const title = document.createElement('h2');
       title.textContent = link.name;
@@ -64,13 +69,11 @@
       const desc = document.createElement('p');
       desc.textContent = link.desc || '';
 
-      contentDiv.appendChild(title);
-      contentDiv.appendChild(desc);
-
       a.appendChild(iconSpan);
-      a.appendChild(contentDiv);
-      li.appendChild(a);
-      container.appendChild(li);
+      a.appendChild(title);
+      a.appendChild(desc);
+      cardWrap.appendChild(a);
+      container.appendChild(cardWrap);
     });
   </script>
   <script src="sidebar.js"></script>

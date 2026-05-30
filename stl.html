@@ -4,40 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STLダウンロード - 甘今美味</title>
+    <title>3Dモデル — 甘今美味</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- 背景画像 -->
-    <div class="background"></div>
-
     <div class="app-wrapper">
         <main class="main-content">
-            <div class="container">
-                <header>
-                    <div class="profile-img">
-                        <span>📦</span>
-                    </div>
-                    <h1>3Dモデル</h1>
-                    <p class="subtitle">ダウンロードコーナー</p>
-                </header>
+            <!-- ページ導入部 -->
+            <div class="page-intro">
+                <span class="page-intro-icon">📦</span>
+                <h1>3Dモデル</h1>
+                <p class="subtitle">デジタル空間で形作られた、立体データの展示と配布</p>
+            </div>
 
-                <section class="download-section">
-                    <h2>S字フック</h2>
-                    <p>初めて作成した3Dモデルになります。下のボタンからデータのダウンロードができます。ご自身の環境で3Dプリントなどにお使いください。</p>
-                    <a href="assets/s_hook_3dobj.stl" download class="download-btn">STLをダウンロード</a>
-                </section>
-
-                <footer>
-                    <p>© 2026 amaimauma</p>
-                </footer>
+            <!-- 展示風ショウケース -->
+            <div class="stl-showcase-container" style="opacity: 0; transform: translateY(30px); animation: fadeSlideUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.15s;">
+                <h2 class="stl-showcase-title">S字フック (S-Hook)</h2>
+                <p class="stl-showcase-desc">
+                    初めて設計・作成したオリジナルの3Dモデルです。実用的な使い勝手と、無駄のない美しいフォルムの調和を目指しました。<br><br>
+                    下のボタンから立体データをダウンロードしていただけます。ご自身の3Dプリント環境などでお役立てください。
+                </p>
+                <a href="assets/s_hook_3dobj.stl" download class="btn-premium">STLデータをダウンロード</a>
             </div>
         </main>
+
+        <footer>
+            <p>© 2026 amaimauma</p>
+        </footer>
     </div>
-        <script src="sidebar.js"></script>
+    <script src="sidebar.js"></script>
 </body>
 
 </html>
