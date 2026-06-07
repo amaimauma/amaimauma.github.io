@@ -10,6 +10,7 @@ const navigationHTML = `
         <li><a href="stl.html" class="menu-link">3D OBJ <span>— 立体物</span></a></li>
         <li><a href="articles.html" class="menu-link">ARTICLES <span>— 記事</span></a></li>
         <li><a href="drinks.html" class="menu-link">DRINKS <span>— 嗜好品</span></a></li>
+        <li><a href="game.html" class="menu-link">GAME <span>— 遊戯</span></a></li>
       </ul>
     </nav>
     <div class="menu-sidebar-text">

@@ -263,6 +263,7 @@ html, body {
 .is-open .menu-nav-list li:nth-child(2) a { transition-delay: 0.18s; }
 .is-open .menu-nav-list li:nth-child(3) a { transition-delay: 0.26s; }
 .is-open .menu-nav-list li:nth-child(4) a { transition-delay: 0.34s; }
+.is-open .menu-nav-list li:nth-child(5) a { transition-delay: 0.42s; }
 
 .menu-nav-list a:hover {
   color: var(--accent);
