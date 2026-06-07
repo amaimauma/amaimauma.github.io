@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HB34GDT9T0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-HB34GDT9T0');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>撃墜 (インベーダー) — 甘今美味</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ==========================================================================
+       Game Page Custom CSS (和モダン・ガラスモルフィズム・レスポンシブ)
+       ========================================================================== */
+    .game-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: 500px 220px;
+      gap: 2rem;
+      align-items: start;
+      justify-content: center;
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    @media (max-width: 768px) {
+      .game-layout {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+    }
+
+    /* パネルの基本装飾 */
+    .game-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-panel {
+        background: rgba(22, 30, 41, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+    }
+
+    .game-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--accent);
+    }
+
+    .game-panel h3 {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border-color);
+      width: 100%;
+      text-align: center;
+      padding-bottom: 0.5rem;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 1 / 1;
+    }
+
+    #invaderCanvas {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      display: block;
+      box-sizing: border-box;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #invaderCanvas {
+        background: rgba(10, 14, 20, 0.9);
+      }
+    }
+
+    /* ゲーム状況オーバーレイ */
+    .game-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(251, 250, 248, 0.92);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      transition: opacity 0.4s ease;
+      border: 1px solid var(--border-color);
+      box-sizing: border-box;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .game-overlay {
+        background: rgba(10, 14, 20, 0.92);
+      }
+    }
+
+    .overlay-content {
+      text-align: center;
+      padding: 2rem;
+      width: 90%;
+    }
+
+    .overlay-content h2 {
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
+      color: var(--text-primary);
+    }
+
+    .overlay-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
+    }
+
+    /* ステータス項目 */
+    .status-block {
+      width: 100%;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.4rem;
+      width: 100%;
+    }
+
+    .status-item .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .status-item .value {
+      font-family: var(--font-english);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    /* ライフハート表示 */
+    .lives-container {
+      display: flex;
+      gap: 4px;
+      color: #B7282E; /* 茜色 */
+      font-size: 1.1rem;
+    }
+
+    /* 設定ボタン群 */
+    .game-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+
+    .settings-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      font-family: var(--font-serif);
+    }
+
+    .settings-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(182, 146, 85, 0.05);
+    }
+
+    /* PC用操作ガイド */
+    .controls-guide {
+      margin-top: 1.2rem;
+      width: 100%;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.8rem;
+    }
+
+    .controls-guide h4 {
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+      text-align: center;
+    }
+
+    .controls-guide ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .controls-guide li {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .controls-guide li span {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-family: monospace;
+    }
+
+    /* モバイル専用要素 */
+    .mobile-only {
+      display: none;
+    }
+
+    /* モバイル操作コントローラー */
+    .mobile-controller {
+      display: none;
+      width: 100%;
+      max-width: 360px;
+      margin: 1.5rem auto 0;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .mobile-dpad {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .ctrl-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background-color 0.1s, transform 0.1s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .ctrl-btn:active {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      transform: scale(0.92);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .ctrl-btn:active {
+        background: rgba(212, 177, 112, 0.15);
+      }
+    }
+
+    .btn-dir {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+    }
+
+    .btn-shoot {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+    }
+
+    /* ==========================================================================
+       Responsive adjustments
+       ========================================================================== */
+    @media (max-width: 768px) {
+      /* ページタイトルを非表示にして縦幅を削減 */
+      .page-intro {
+        display: none;
+      }
+      .back-to-portal-wrap {
+        margin: 0 auto 0.4rem !important;
+        text-align: center !important;
+      }
+      .main-content {
+        padding: 50px 10px 10px !important;
+      }
+
+      .game-layout {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+      }
+
+      /* info-panel を上部ヘッダーとして横並びに */
+      .side-panel.info-panel {
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 0.4rem;
+        background: none;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        flex-direction: row; /* 横一列 */
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .side-panel.info-panel::before {
+        display: none;
+      }
+      .side-panel.info-panel h3 {
+        display: none;
+      }
+
+      /* 得点・陣数・残機を横並びに */
+      .status-block {
+        flex-direction: row;
+        gap: 0.4rem;
+        margin-top: 0;
+        width: auto;
+      }
+      .status-item {
+        border-bottom: none;
+        padding-bottom: 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+      }
+      .status-item .label {
+        font-size: 0.55rem;
+      }
+      .status-item .value {
+        font-size: 0.8rem;
+      }
+      .lives-container {
+        font-size: 0.85rem;
+      }
+
+      /* 設定ボタンを横並びに */
+      .game-settings {
+        flex-direction: row;
+        width: auto;
+        margin-top: 0;
+        gap: 0.25rem;
+      }
+      .settings-btn {
+        padding: 0.2rem 0.35rem;
+        font-size: 0.6rem;
+      }
+
+      /* メインゲーム盤 */
+      .main-panel {
+        padding: 0;
+        background: none;
+        border: none;
+        box-shadow: none;
+      }
+      .main-panel::before {
+        display: none;
+      }
+      .canvas-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        max-width: min(100%, 45vh);
+        margin: 0 auto;
+      }
+
+      .mobile-only {
+        display: flex;
+      }
+
+      .controls-guide {
+        display: none;
+      }
+
+      /* 操作ボタンをコンパクトに縮小 */
+      .mobile-controller {
+        display: flex !important;
+        margin-top: 0.4rem;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+      }
+      .mobile-dpad {
+        gap: 0.4rem;
+      }
+      .btn-dir {
+        width: 46px;
+        height: 46px;
+        font-size: 0.9rem;
+      }
+      .btn-shoot {
+        width: 60px;
+        height: 60px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-wrapper">
+    <main class="main-content">
+      <!-- 戻るボタン -->
+      <div class="back-to-portal-wrap" style="width: 100%; max-width: 800px; margin: 0 auto 2rem; text-align: left;">
+        <a href="game.html" class="btn-premium" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          ← 遊戯選択に戻る
+        </a>
+      </div>
+
+      <!-- ページ導入部 -->
+      <div class="page-intro">
+        <span class="page-intro-icon">🏹</span>
+        <h1>撃墜 <span style="font-size: 1.2rem; font-weight: 300; opacity: 0.7; color: var(--accent); font-family: var(--font-english);">— INVADERS</span></h1>
+        <p class="subtitle">和紋様を纏った敵を、弓矢と勾玉の弾で迎え撃つ空中戦。静寂の中に太鼓の音が響く。</p>
+      </div>
+
+      <!-- ゲームセクション -->
+      <div class="game-section">
+
+        <div class="game-layout">
+
+          <!-- メインゲーム盤 -->
+          <div class="game-panel main-panel">
+            <div class="canvas-container">
+              <canvas id="invaderCanvas" width="480" height="480"></canvas>
+              
+              <!-- オーバーレイ表示 -->
+              <div id="gameOverlay" class="game-overlay">
+                <div class="overlay-content">
+                  <h2 id="overlayTitle">撃 墜 (インベーダー)</h2>
+                  <p id="overlayMessage">家紋の敵を撃ち落とす和風シューティング</p>
+                  <button id="startBtn" class="btn-premium">遊戯開始</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右パネル (ステータス情報、設定ボタン) -->
+          <div class="game-panel side-panel info-panel">
+            <h3>軍況</h3>
+
+            <div class="status-block">
+              <div class="status-item">
+                <span class="label">得点</span>
+                <span class="value" id="scoreValue">0</span>
+              </div>
+              <div class="status-item">
+                <span class="label">陣数 (WAVE)</span>
+                <span class="value" id="waveValue">1</span>
+              </div>
+              <div class="status-item">
+                <span class="label">残機</span>
+                <span class="value">
+                  <div class="lives-container" id="livesContainer">
+                    <span>🏮</span><span>🏮</span><span>🏮</span>
+                  </div>
+                </span>
+              </div>
+            </div>
+
+            <div class="controls-guide">
+              <h4>操作方法</h4>
+              <ul>
+                <li><span>←</span> <span>→</span> 移動</li>
+                <li><span>Space</span> 弓を引く (射撃)</li>
+                <li><span>P</span> 一時停止</li>
+              </ul>
+            </div>
+
+            <div class="game-settings">
+              <button id="muteBtn" class="settings-btn" aria-label="音量切り替え">
+                <span id="muteIcon">🔇</span> <span id="muteText">消音中</span>
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- スマホ用コントローラーパネル -->
+        <div id="mobileController" class="mobile-controller">
+          <div class="mobile-dpad">
+            <button class="ctrl-btn btn-dir" id="ctrlLeft">←</button>
+            <button class="ctrl-btn btn-dir" id="ctrlRight">→</button>
+          </div>
+          <button class="ctrl-btn btn-shoot" id="ctrlShoot">射撃</button>
+        </div>
+
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2026 amaimauma</p>
+    </footer>
+  </div>
+
+  <script src="sidebar.js"></script>
+  <script>
+    // ==========================================================================
+    // 1. SoundManager (Web Audio API を用いた和風シンセ効果音)
+    // ==========================================================================
+    class SoundManager {
+      constructor() {
+        this.ctx = null;
+        this.muted = true;
+      }
+
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playShoot() {
+        // 自機射撃音: 「ひょう」と矢を放つような和風スイープ音
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(350, now);
+        osc.frequency.exponentialRampToValueAtTime(1400, now + 0.12);
+        
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playExplode(type) {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        
+        if (type === 0) {
+          // 小型敵撃破: おりん（鈴）をイメージしたクリアな音
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1200, now);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 1) {
+          // 中型敵撃破: 鼓（つづみ）を叩いたような減衰音
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(250, now);
+          osc.frequency.exponentialRampToValueAtTime(80, now + 0.15);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } else {
+          // 大型敵・ボス撃破: 和太鼓のようなドンという重低音
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          // ノイズ風にするため、少し周波数を低く設定
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(120, now);
+          osc.frequency.linearRampToValueAtTime(30, now + 0.25);
+          
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        }
+      }
+
+      playHit() {
+        // 自機被弾音: ドシャッという鈍い打撃音
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.linearRampToValueAtTime(40, now + 0.3);
+        
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      playGameOver() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        
+        const playString = (baseFreq, delay) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(baseFreq, now + delay);
+          osc.frequency.linearRampToValueAtTime(baseFreq * 0.5, now + delay + 0.8);
+          
+          gain.gain.setValueAtTime(0, now + delay);
+          gain.gain.linearRampToValueAtTime(0.06, now + delay + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.8);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.start(now + delay);
+          osc.stop(now + delay + 0.85);
+        };
+
+        playString(196, 0);   // G3
+        playString(146.83, 0.15); // D3
+        playString(98, 0.3);    // G2
+      }
+    }
+
+    const sound = new SoundManager();
+
+    // ==========================================================================
+    // 2. Invaders Game Logic & Graphics
+    // ==========================================================================
+    
+    // キャンバスコンテキスト
+    const canvas = document.getElementById('invaderCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const scoreValue = document.getElementById('scoreValue');
+    const waveValue = document.getElementById('waveValue');
+    const livesContainer = document.getElementById('livesContainer');
+
+    const gameOverlay = document.getElementById('gameOverlay');
+    const overlayTitle = document.getElementById('overlayTitle');
+    const overlayMessage = document.getElementById('overlayMessage');
+    const startBtn = document.getElementById('startBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const mobileController = document.getElementById('mobileController');
+
+    // ゲーム状態
+    let score = 0;
+    let wave = 1;
+    let lives = 3;
+    let gameOver = false;
+    let paused = false;
+    let gameStarted = false;
+
+    // 自機
+    const player = {
+      x: canvas.width / 2 - 18,
+      y: canvas.height - 40,
+      width: 36,
+      height: 24,
+      speed: 4,
+      isMovingLeft: false,
+      isMovingRight: false
+    };
+
+    // 弾丸配列
+    let playerBullets = [];
+    let enemyBullets = [];
+
+    // 敵（インベーダー）
+    let enemies = [];
+    const enemyRows = 4;
+    const enemyCols = 6;
+    const enemyWidth = 32;
+    const enemyHeight = 24;
+    const enemyGapX = 22;
+    const enemyGapY = 18;
+
+    let enemyDirection = 1; // 1: 右、-1: 左
+    let enemySpeed = 0.5; // 初期移動速度
+    let enemyMoveDownDistance = 14;
+    let timeSinceLastEnemyMove = 0;
+    let enemyMoveInterval = 800; // 敵が移動する間隔（ミリ秒）
+    let enemyAttackTimer = 0;
+    let enemyAttackInterval = 1500; // 敵が攻撃する間隔（ミリ秒）
+
+    // 防壁 (Shields)
+    let shields = [];
+    const shieldCount = 3;
+    const shieldWidth = 48;
+    const shieldHeight = 24;
+    
+    // パーティクル配列
+    let particles = [];
+
+    // ==========================================================================
+    // 3. パーティクルエフェクト (金箔スパーク)
+    // ==========================================================================
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 3 + 1.5;
+        this.vx = (Math.random() - 0.5) * 5;
+        this.vy = (Math.random() - 0.5) * 5 - 1;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.03 + 0.02;
+        this.color = color || 'rgba(212, 177, 112, '; // ゴールド
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.05;
+        this.alpha -= this.decay;
+        this.rotation += this.rotationSpeed;
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.fillStyle = this.color + this.alpha + ')';
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        ctx.restore();
+      }
+    }
+
+    function createExplosion(x, y, type) {
+      const goldColor = 'rgba(212, 177, 112, ';
+      const colors = [
+        goldColor,
+        'rgba(183, 40, 46, ', // 茜色
+        'rgba(30, 77, 140, '  // 瑠璃色
+      ];
+      const selectedColor = colors[type % colors.length];
+      
+      for (let i = 0; i < 15; i++) {
+        particles.push(new Particle(x, y, selectedColor));
+      }
+    }
+
+    function updateParticles() {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    // ==========================================================================
+    // 4. ゲーム初期化と再構築
+    // ==========================================================================
+    function initEnemies() {
+      enemies = [];
+      const totalWidth = (enemyCols * enemyWidth) + ((enemyCols - 1) * enemyGapX);
+      const startX = (canvas.width - totalWidth) / 2;
+      const startY = 60;
+
+      for (let r = 0; r < enemyRows; r++) {
+        for (let c = 0; c < enemyCols; c++) {
+          enemies.push({
+            x: startX + c * (enemyWidth + enemyGapX),
+            y: startY + r * (enemyHeight + enemyGapY),
+            width: enemyWidth,
+            height: enemyHeight,
+            type: enemyRows - 1 - r, // 下の行から低いタイプ
+            score: (r + 1) * 10,
+            frame: 0
+          });
+        }
+      }
+
+      // 難易度（陣数）に応じた調整
+      enemySpeed = 0.4 + (wave - 1) * 0.12;
+      enemyMoveInterval = Math.max(200, 800 - (wave - 1) * 100);
+      enemyAttackInterval = Math.max(600, 1500 - (wave - 1) * 200);
+    }
+
+    function initShields() {
+      shields = [];
+      const spacing = canvas.width / (shieldCount + 1);
+      
+      for (let i = 0; i < shieldCount; i++) {
+        const sx = spacing * (i + 1) - shieldWidth / 2;
+        const sy = canvas.height - 90;
+        
+        // 防壁をさらに細かなブロック（セルの集合体）として構築する
+        // これにより、弾丸が当たった部分が部分的に壊れて穴が開く表現ができる
+        const cells = [];
+        const cols = 6;
+        const rows = 4;
+        const cellW = shieldWidth / cols;
+        const cellH = shieldHeight / rows;
+        
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            // アーチ型の下側を少し削る
+            if (r === rows - 1 && (c === 2 || c === 3)) continue;
+            
+            cells.push({
+              x: sx + c * cellW,
+              y: sy + r * cellH,
+              width: cellW,
+              height: cellH,
+              alive: true
+            });
+          }
+        }
+        
+        shields.push({
+          cells: cells
+        });
+      }
+    }
+
+    function resetGame() {
+      score = 0;
+      wave = 1;
+      lives = 3;
+      gameOver = false;
+      paused = false;
+      playerBullets = [];
+      enemyBullets = [];
+      particles = [];
+      
+      player.x = canvas.width / 2 - player.width / 2;
+
+      initEnemies();
+      initShields();
+      updateStatusUI();
+    }
+
+    function nextWave() {
+      wave++;
+      playerBullets = [];
+      enemyBullets = [];
+      initEnemies();
+      initShields();
+      updateStatusUI();
+    }
+
+    function updateStatusUI() {
+      scoreValue.textContent = score;
+      waveValue.textContent = wave;
+      
+      // ライフの描画（灯籠の絵文字 🏮）
+      let hearts = '';
+      for (let i = 0; i < lives; i++) {
+        hearts += '🏮';
+      }
+      livesContainer.innerHTML = hearts || '滅';
+    }
+
+    // ==========================================================================
+    // 5. 更新処理 (移動、衝突判定)
+    // ==========================================================================
+    
+    // AABB衝突判定
+    function checkRectCollision(r1, r2) {
+      return r1.x < r2.x + r2.width &&
+             r1.x + r1.width > r2.x &&
+             r1.y < r2.y + r2.height &&
+             r1.y + r1.height > r2.y;
+    }
+
+    function updateGame(deltaTime) {
+      if (gameOver || paused || !gameStarted) return;
+
+      // 1. プレイヤーの移動
+      if (player.isMovingLeft) {
+        player.x = Math.max(0, player.x - player.speed);
+      }
+      if (player.isMovingRight) {
+        player.x = Math.min(canvas.width - player.width, player.x + player.speed);
+      }
+
+      // 2. 自機弾の更新
+      for (let i = playerBullets.length - 1; i >= 0; i--) {
+        const b = playerBullets[i];
+        b.y -= b.speed;
+        
+        // 画面外判定
+        if (b.y < 0) {
+          playerBullets.splice(i, 1);
+          continue;
+        }
+
+        // 防壁との衝突
+        let hitShield = false;
+        for (let s of shields) {
+          for (let cell of s.cells) {
+            if (cell.alive && checkRectCollision(b, cell)) {
+              cell.alive = false;
+              hitShield = true;
+              break;
+            }
+          }
+          if (hitShield) break;
+        }
+
+        if (hitShield) {
+          playerBullets.splice(i, 1);
+          continue;
+        }
+
+        // 敵との衝突
+        let hitEnemy = false;
+        for (let j = enemies.length - 1; j >= 0; j--) {
+          const e = enemies[j];
+          if (checkRectCollision(b, e)) {
+            sound.playExplode(e.type);
+            createExplosion(e.x + e.width / 2, e.y + e.height / 2, e.type);
+            score += e.score;
+            enemies.splice(j, 1);
+            hitEnemy = true;
+            updateStatusUI();
+            break;
+          }
+        }
+
+        if (hitEnemy) {
+          playerBullets.splice(i, 1);
+          
+          // 敵全滅によるウェーブクリア判定
+          if (enemies.length === 0) {
+            nextWave();
+          }
+        }
+      }
+
+      // 3. 敵弾の更新
+      for (let i = enemyBullets.length - 1; i >= 0; i--) {
+        const b = enemyBullets[i];
+        b.y += b.speed;
+
+        // 画面外判定
+        if (b.y > canvas.height) {
+          enemyBullets.splice(i, 1);
+          continue;
+        }
+
+        // 防壁との衝突
+        let hitShield = false;
+        for (let s of shields) {
+          for (let cell of s.cells) {
+            if (cell.alive && checkRectCollision(b, cell)) {
+              cell.alive = false;
+              hitShield = true;
+              break;
+            }
+          }
+          if (hitShield) break;
+        }
+
+        if (hitShield) {
+          enemyBullets.splice(i, 1);
+          continue;
+        }
+
+        // 自機との衝突
+        if (checkRectCollision(b, player)) {
+          sound.playHit();
+          createExplosion(player.x + player.width / 2, player.y + player.height / 2, 2);
+          lives--;
+          updateStatusUI();
+          enemyBullets.splice(i, 1);
+
+          if (lives <= 0) {
+            endGame();
+          }
+          continue;
+        }
+      }
+
+      // 4. 敵（インベーダー）的の移動
+      timeSinceLastEnemyMove += deltaTime;
+      if (timeSinceLastEnemyMove >= enemyMoveInterval) {
+        timeSinceLastEnemyMove = 0;
+        
+        let changeDirection = false;
+        
+        // 敵の足をバタバタさせるアニメ用フレーム切り替え
+        enemies.forEach(e => {
+          e.frame = e.frame === 0 ? 1 : 0;
+        });
+
+        // 左右限界判定
+        for (let e of enemies) {
+          const nextX = e.x + (enemyWidth * 0.4) * enemyDirection;
+          if (nextX <= 10 || nextX >= canvas.width - enemyWidth - 10) {
+            changeDirection = true;
+            break;
+          }
+        }
+
+        if (changeDirection) {
+          enemyDirection *= -1;
+          // 一段降下
+          for (let e of enemies) {
+            e.y += enemyMoveDownDistance;
+            // 自機のラインに到達したか判定
+            if (e.y + e.height >= player.y) {
+              endGame();
+              return;
+            }
+          }
+        } else {
+          // 通常左右移動
+          for (let e of enemies) {
+            e.x += (enemyWidth * 0.35) * enemyDirection;
+          }
+        }
+      }
+
+      // 5. 敵の攻撃ロジック
+      enemyAttackTimer += deltaTime;
+      if (enemyAttackTimer >= enemyAttackInterval) {
+        enemyAttackTimer = 0;
+        
+        if (enemies.length > 0) {
+          // 最前列（一番下）にいる敵を列ごとに抽出し、そこからランダムに発射
+          const columns = {};
+          enemies.forEach(e => {
+            const colIndex = Math.floor(e.x / (enemyWidth + enemyGapX));
+            if (!columns[colIndex] || columns[colIndex].y < e.y) {
+              columns[colIndex] = e;
+            }
+          });
+
+          const firingEnemies = Object.values(columns);
+          const shooter = firingEnemies[Math.floor(Math.random() * firingEnemies.length)];
+          
+          if (shooter) {
+            enemyBullets.push({
+              x: shooter.x + shooter.width / 2 - 2,
+              y: shooter.y + shooter.height,
+              width: 4,
+              height: 10,
+              speed: 3.5 + (wave - 1) * 0.5
+            });
+          }
+        }
+      }
+
+      // 6. パーティクルの更新
+      updateParticles();
+    }
+
+    function shoot() {
+      if (gameOver || paused || !gameStarted) return;
+      // 画面上に発射できる弾丸数は3発までとする（制限を設けて戦略性を出す）
+      if (playerBullets.length < 3) {
+        sound.playShoot();
+        playerBullets.push({
+          x: player.x + player.width / 2 - 2,
+          y: player.y - 12,
+          width: 4,
+          height: 12,
+          speed: 6.5
+        });
+      }
+    }
+
+    // ==========================================================================
+    // 6. 描画処理 (和風グラフィックス)
+    // ==========================================================================
+    
+    // 勾玉の描画
+    function drawMagatama(ctx, x, y, size, color) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      // 勾玉の丸頭
+      ctx.arc(0, -size / 4, size / 2, 0, Math.PI * 2);
+      // 尾の曲線
+      ctx.moveTo(-size / 2, -size / 4);
+      ctx.bezierCurveTo(-size / 2, size / 2, 0, size / 2, 0, size);
+      ctx.bezierCurveTo(0, size / 2, 0, 0, 0, -size / 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // プレイヤー自機「鳥居（および弓）」の描画
+    function drawPlayer() {
+      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const toriiColor = isDarkMode ? '#d4b170' : '#0f1c2b';
+      
+      ctx.save();
+      ctx.strokeStyle = toriiColor;
+      ctx.lineWidth = 2;
+      
+      const x = player.x;
+      const y = player.y;
+      const w = player.width;
+      const h = player.height;
+
+      // 1. 笠木 (上部の反った横棒)
+      ctx.beginPath();
+      ctx.moveTo(x - 2, y + 4);
+      ctx.quadraticCurveTo(x + w / 2, y - 1, x + w + 2, y + 4);
+      ctx.stroke();
+
+      // 2. 島木 (笠木のすぐ下の平らな横棒)
+      ctx.beginPath();
+      ctx.moveTo(x, y + 7);
+      ctx.lineTo(x + w, y + 7);
+      ctx.stroke();
+
+      // 3. 貫 (下部の平行な横棒)
+      ctx.beginPath();
+      ctx.moveTo(x + 2, y + 13);
+      ctx.lineTo(x + w - 2, y + 13);
+      ctx.stroke();
+
+      // 4. 左右の柱 (少しハの字に広げる)
+      ctx.beginPath();
+      ctx.moveTo(x + 8, y + 7);
+      ctx.lineTo(x + 6, y + h);
+      ctx.moveTo(x + w - 8, y + 7);
+      ctx.lineTo(x + w - 6, y + h);
+      ctx.stroke();
+
+      // 5. 額束 (中央の短い縦の飾り板)
+      ctx.beginPath();
+      ctx.moveTo(x + w / 2, y + 7);
+      ctx.lineTo(x + w / 2, y + 13);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // 家紋風インベーダーの描画
+    function drawEnemy(e) {
+      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const cx = e.x + e.width / 2;
+      const cy = e.y + e.height / 2;
+      const r = Math.min(e.width, e.height) / 2;
+
+      ctx.save();
+      ctx.lineWidth = 1.5;
+      
+      // 敵のタイプ別に日本の伝統色を配色
+      let color = '#FFB900'; // 山吹
+      if (e.type === 1) color = '#00A3AF'; // 浅葱
+      if (e.type === 2) color = '#789B3C'; // 萌黄
+      if (e.type === 3) color = '#B7282E'; // 茜
+
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+
+      // アニメーション用の微細な伸縮
+      const pulse = e.frame === 0 ? 1.05 : 0.95;
+
+      if (e.type === 0) {
+        // 巴紋風 (丸に渦巻きライン)
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * pulse, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * 0.5 * pulse, 0, Math.PI, false);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx - r * 0.25, cy, r * 0.25 * pulse, 0, Math.PI, true);
+        ctx.stroke();
+      } 
+      else if (e.type === 1) {
+        // 千鳥風 (三角ベースの羽ばたきライン)
+        const wingY = e.frame === 0 ? cy - 3 : cy + 3;
+        ctx.beginPath();
+        // 頭
+        ctx.moveTo(cx, cy - r);
+        // 右翼
+        ctx.lineTo(cx + r, wingY);
+        ctx.lineTo(cx + r * 0.4, cy + r * 0.2);
+        // 尾
+        ctx.lineTo(cx, cy + r);
+        // 左翼
+        ctx.lineTo(cx - r * 0.4, cy + r * 0.2);
+        ctx.lineTo(cx - r, wingY);
+        ctx.closePath();
+        ctx.stroke();
+      } 
+      else if (e.type === 2) {
+        // 七宝・武田菱風 (ひし形の組み合わせ)
+        const size = r * pulse;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - size);
+        ctx.lineTo(cx + size, cy);
+        ctx.lineTo(cx, cy + size);
+        ctx.lineTo(cx - size, cy);
+        ctx.closePath();
+        ctx.stroke();
+        
+        // 内ひし形
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - size * 0.5);
+        ctx.lineTo(cx + size * 0.5, cy);
+        ctx.lineTo(cx, cy + size * 0.5);
+        ctx.lineTo(cx - size * 0.5, cy);
+        ctx.closePath();
+        ctx.stroke();
+      } 
+      else {
+        // 井桁・格子紋風
+        const len = r * pulse;
+        ctx.beginPath();
+        // 井の字を描く
+        ctx.moveTo(cx - len * 0.4, cy - len);
+        ctx.lineTo(cx - len * 0.4, cy + len);
+        ctx.moveTo(cx + len * 0.4, cy - len);
+        ctx.lineTo(cx + len * 0.4, cy + len);
+        
+        ctx.moveTo(cx - len, cy - len * 0.4);
+        ctx.lineTo(cx + len, cy - len * 0.4);
+        ctx.moveTo(cx - len, cy + len * 0.4);
+        ctx.lineTo(cx + len, cy + len * 0.4);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    // 防壁「竹垣」の描画
+    function drawShields() {
+      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      shields.forEach(s => {
+        s.cells.forEach(cell => {
+          if (cell.alive) {
+            ctx.save();
+            // 竹のような落ち着いた緑（萌黄や苔色）
+            ctx.fillStyle = isDarkMode ? 'rgba(120, 155, 60, 0.7)' : 'rgba(90, 120, 45, 0.8)';
+            ctx.fillRect(cell.x, cell.y, cell.width, cell.height);
+            
+            // 竹の節を表す極細線
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.lineWidth = 0.5;
+            ctx.strokeRect(cell.x, cell.y, cell.width, cell.height);
+            ctx.restore();
+          }
+        });
+      });
+    }
+
+    // 盤面全体の描画
+    function drawScene() {
+      // 画面クリア
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 背景の薄い和風格子グリッド
+      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      ctx.strokeStyle = isDarkMode ? 'rgba(32, 45, 60, 0.15)' : 'rgba(227, 222, 214, 0.35)';
+      ctx.lineWidth = 0.5;
+      const gridSize = 40;
+      
+      for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // 防壁の描画
+      drawShields();
+
+      // プレイヤー自機の描画
+      drawPlayer();
+
+      // 敵インベーダーの描画
+      enemies.forEach(drawEnemy);
+
+      // 自機弾（ゴールドの勾玉）の描画
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const playerBulletColor = isDark ? '#d4b170' : '#b69255';
+      playerBullets.forEach(b => {
+        drawMagatama(ctx, b.x + b.width / 2, b.y, 8, playerBulletColor);
+      });
+
+      // 敵弾（茜色または赤紫の飛び矢）の描画
+      enemyBullets.forEach(b => {
+        ctx.save();
+        ctx.fillStyle = '#B7282E'; // 茜色
+        ctx.fillRect(b.x, b.y, b.width, b.height);
+        
+        // 矢の羽部分を簡略描画
+        ctx.strokeStyle = '#B7282E';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(b.x - 2, b.y);
+        ctx.lineTo(b.x + b.width + 2, b.y);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // パーティクルの描画
+      particles.forEach(p => p.draw(ctx));
+    }
+
+    // ==========================================================================
+    // 7. ゲーム状態の制御 (開始、終了、ポーズ)
+    // ==========================================================================
+    function showOverlay(title, msg, btnText) {
+      overlayTitle.textContent = title;
+      overlayMessage.textContent = msg;
+      startBtn.textContent = btnText;
+      gameOverlay.style.opacity = '1';
+      gameOverlay.style.visibility = 'visible';
+    }
+
+    function hideOverlay() {
+      gameOverlay.style.opacity = '0';
+      gameOverlay.style.visibility = 'hidden';
+    }
+
+    function startGame() {
+      sound.init();
+      resetGame();
+      gameStarted = true;
+      hideOverlay();
+      lastTime = performance.now();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function endGame() {
+      gameOver = true;
+      gameStarted = false;
+      sound.playGameOver();
+      showOverlay('敗 局', `全機撃破されました。得点: ${score}`, 'もう一度遊ぶ');
+    }
+
+    function togglePause() {
+      if (!gameStarted || gameOver) return;
+      paused = !paused;
+      
+      if (paused) {
+        sound.init();
+        showOverlay('一時停止', '戦況を一時的に停止しています', '再開');
+      } else {
+        hideOverlay();
+        lastTime = performance.now(); // タイマーの再同期
+      }
+    }
+
+    let lastTime = 0;
+    function gameLoop(time = 0) {
+      if (gameOver) return;
+
+      const deltaTime = time - lastTime;
+      lastTime = time;
+
+      if (!paused && gameStarted) {
+        updateGame(deltaTime);
+      }
+
+      drawScene();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // ==========================================================================
+    // 8. 入力処理 (キーボード、タッチ操作)
+    // ==========================================================================
+    
+    // キーボード
+    window.addEventListener('keydown', event => {
+      if (['Space', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
+        event.preventDefault();
+      }
+
+      if (event.code === 'KeyP' || event.code === 'Escape') {
+        togglePause();
+        return;
+      }
+
+      if (gameOver || paused || !gameStarted) return;
+
+      switch (event.code) {
+        case 'ArrowLeft':
+        case 'KeyA':
+          player.isMovingLeft = true;
+          break;
+        case 'ArrowRight':
+        case 'KeyD':
+          player.isMovingRight = true;
+          break;
+        case 'Space':
+          shoot();
+          break;
+      }
+    });
+
+    window.addEventListener('keyup', event => {
+      switch (event.code) {
+        case 'ArrowLeft':
+        case 'KeyA':
+          player.isMovingLeft = false;
+          break;
+        case 'ArrowRight':
+        case 'KeyD':
+          player.isMovingRight = false;
+          break;
+      }
+    });
+
+    startBtn.addEventListener('click', () => {
+      if (!gameStarted) {
+        startGame();
+      } else if (paused) {
+        togglePause();
+      }
+    });
+
+    muteBtn.addEventListener('click', () => {
+      sound.muted = !sound.muted;
+      sound.init();
+      
+      const muteIcon = document.getElementById('muteIcon');
+      const muteText = document.getElementById('muteText');
+      if (sound.muted) {
+        muteIcon.textContent = '🔇';
+        muteText.textContent = '消音中';
+      } else {
+        muteIcon.textContent = '🔊';
+        muteText.textContent = '奏楽中';
+      }
+    });
+
+    // スマホ用タッチコントローラー（長押し移動・射撃）
+    function setupMobileMoveButton(id, dir) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+
+      const startAction = (e) => {
+        e.preventDefault();
+        if (gameOver || paused || !gameStarted) return;
+        if (dir === -1) player.isMovingLeft = true;
+        if (dir === 1) player.isMovingRight = true;
+        
+        if (navigator.vibrate) {
+          navigator.vibrate(12);
+        }
+      };
+
+      const stopAction = (e) => {
+        e.preventDefault();
+        if (dir === -1) player.isMovingLeft = false;
+        if (dir === 1) player.isMovingRight = false;
+      };
+
+      btn.addEventListener('touchstart', startAction, { passive: false });
+      btn.addEventListener('touchend', stopAction, { passive: false });
+      btn.addEventListener('touchcancel', stopAction, { passive: false });
+    }
+
+    setupMobileMoveButton('ctrlLeft', -1);
+    setupMobileMoveButton('ctrlRight', 1);
+
+    const shootBtn = document.getElementById('ctrlShoot');
+    if (shootBtn) {
+      shootBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (gameOver || paused || !gameStarted) return;
+        shoot();
+        if (navigator.vibrate) {
+          navigator.vibrate(15);
+        }
+      }, { passive: false });
+    }
+
+    // 初期描画
+    drawScene();
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      drawScene();
+    });
+  </script>
+</body>
+
+</html>
